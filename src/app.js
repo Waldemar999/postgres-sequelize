@@ -14,14 +14,6 @@ app.listen(port, async () => {
   try {
     await db.sequelize.authenticate();
     console.log('Database connection has been established successfully');
-    (async function doStuff() {
-      console.log(db.sequelize.models.User);
-      // const instance = await db.sequelize.User.findByPk(1, {
-      //     rejectOnEmpty: true,
-      // });
-      const instance = await db.sequelize.models.User.findAndCountAll();
-      console.log(instance);
-    }());
   } catch (error) {
     console.error('Unable to connect to the database:', error.message);
   }

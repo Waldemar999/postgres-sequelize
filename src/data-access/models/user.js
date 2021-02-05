@@ -16,7 +16,5 @@ export default (sequelize, DataTypes) => {
     modelName: 'User',
   });
 
-  console.log('User', User);
-
   return User;
 };

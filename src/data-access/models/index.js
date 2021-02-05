@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
 import { fileURLToPath } from 'url';
-import envConfigs from '../../config/index.json';
+import envConfigs from '../../config/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,15 +25,14 @@ const models = fs
 
 for (const model of models) {
   const { default: importedModel } = await import(path.join(__dirname, model));  
-  db[model.name] = importedModel(sequelize, Sequelize.DataTypes);
+  db[model.split('.js')[0]] = importedModel(sequelize, Sequelize.DataTypes);
 }
 
-  Object.keys(db).forEach(modelName => {
-    console.log('modelName', modelName);
-    if (db[modelName].associate) {
-      db[modelName].associate(db);
-    }
-  });
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
